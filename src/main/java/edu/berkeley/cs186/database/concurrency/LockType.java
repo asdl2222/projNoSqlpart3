@@ -19,6 +19,40 @@ public enum LockType {
             throw new NullPointerException("null lock type");
         }
         // TODO(proj4_part1): implement
+        else if (a == NL) {
+            return true;
+        }
+        else if (b == NL) {
+            return true;
+        }
+        else if (a == IS) {
+            if (b == X) {
+                return false;
+            }
+            return true;
+        }
+        else if (a == IX) {
+            if (b == IS || b == IX) {
+                return true;
+            }
+            return false;
+        }
+        else if (a == S) {
+            if (b == IS || b == S) {
+                return true;
+            }
+            return false;
+        }
+        else if (a == SIX) {
+            if (b == IS) {
+                return true;
+            }
+            return false;
+        }
+        else if (a == X) {
+            return false;
+        }
+
 
         return false;
     }
@@ -51,6 +85,15 @@ public enum LockType {
             throw new NullPointerException("null lock type");
         }
         // TODO(proj4_part1): implement
+        else if ((childLockType == S || childLockType == IS) && (parentLockType == IX || parentLockType == IS)) {
+            return true;
+        }
+        else if ((childLockType == X || childLockType == IX || childLockType == SIX) && (parentLockType == IX || parentLockType == SIX)) {
+            return true;
+        }
+        else if (childLockType == NL && parentLockType != null) {
+            return true;
+        }
 
         return false;
     }
@@ -66,6 +109,30 @@ public enum LockType {
             throw new NullPointerException("null lock type");
         }
         // TODO(proj4_part1): implement
+        else if (required == NL) {
+            return true;
+        }
+        else if (required == substitute) {
+            return true;
+        }
+        else if (required == S) {
+            if (substitute == X || substitute == SIX) {
+                return true;
+            }
+            return false;
+        }
+        else if (required == IX) {
+            if (substitute == X || substitute == SIX) {
+                return true;
+            }
+            return false;
+        }
+        else if (required == IS) {
+            if (substitute == SIX || substitute == IX) {
+                return true;
+            }
+            return false;
+        }
 
         return false;
     }

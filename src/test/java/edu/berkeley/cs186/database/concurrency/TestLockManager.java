@@ -78,6 +78,7 @@ public class TestLockManager {
         // Transaction 0 should have no lock on table0
         assertEquals(LockType.NL, lockman.getLockType(transactions[0], tables[0]));
 
+
         // table0 should have no locks on it from any transaction
         assertEquals(Collections.emptyList(), lockman.getLocks(tables[0]));
 
@@ -312,6 +313,7 @@ public class TestLockManager {
         assertEquals(LockType.NL, lockman.getLockType(transactions[0], dbResource));
         assertEquals(LockType.X, lockman.getLockType(transactions[1], dbResource));
         List<Lock> expectedDbLocks2 = Collections.singletonList(new Lock(dbResource, LockType.X, 1L));
+        System.out.println(expectedDbLocks.toString());
         assertEquals(expectedDbLocks2, lockman.getLocks(dbResource));
 
         // Block checks
