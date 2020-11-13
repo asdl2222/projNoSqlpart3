@@ -1126,7 +1126,13 @@ public class Database implements AutoCloseable {
         @Override
         public void close() {
             try {
-            // TODO(proj4_part2)
+            // TODO(proj4_part2
+                List<Lock> temp = lockManager.getLocks(this);
+
+                for (int i = temp.size() - 1; i >= 0; i -= 1) {
+                    LockContext temp3 = LockContext.fromResourceName(lockManager, temp.get(i).name);
+                    temp3.release(this);
+                }
             return;
             } catch (Exception e) {
                 // There's a chance an error message from your release phase

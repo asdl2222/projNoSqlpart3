@@ -273,9 +273,13 @@ public class TestLockContext {
         r0.acquire(t1, LockType.IS);
         r0.escalate(t1);
         lockManager.startLog();
+        System.out.println(lockManager.log);
         r0.escalate(t1);
+        System.out.println(lockManager.log);
         r0.escalate(t1);
+        System.out.println(lockManager.log);
         r0.escalate(t1);
+        System.out.println(lockManager.log);
         assertEquals(Collections.emptyList(), lockManager.log);
     }
 
@@ -286,11 +290,24 @@ public class TestLockContext {
 
         LockContext r0 = dbLockContext;
         LockContext r1 = tableLockContext;
+        LockContext temp = dbLockContext;
 
         r0.acquire(t1, LockType.IS);
         r1.acquire(t1, LockType.S);
+        temp.acquire(transactions[0], LockType.IS);
         r0.escalate(t1);
-
+        //lockManager.startLog();
+        temp.escalate(transactions[0]);
+        //System.out.println(lockManager.log);
+        //lockManager.startLog();
+        temp.escalate(transactions[0]);
+        //lockManager.startLog();
+        System.out.println(lockManager.log);
+        temp.escalate(transactions[1]);
+        lockManager.startLog();
+        System.out.println(lockManager.log);
+        temp.escalate(transactions[1]);
+        System.out.println(lockManager.log);
         assertTrue(TestLockManager.holds(lockManager, t1, r0.getResourceName(), LockType.S));
         assertFalse(TestLockManager.holds(lockManager, t1, r1.getResourceName(), LockType.S));
     }
@@ -318,6 +335,15 @@ public class TestLockContext {
         assertFalse(TestLockManager.holds(lockManager, t1, r1.getResourceName(), LockType.S));
         assertFalse(TestLockManager.holds(lockManager, t1, r2.getResourceName(), LockType.IS));
         assertFalse(TestLockManager.holds(lockManager, t1, r3.getResourceName(), LockType.S));
+
+        lockManager.startLog();
+        r0.escalate(t1);
+        System.out.println(lockManager.log);
+        LockContext rk = dbLockContext;
+        //rk.acquire(t1, LockType.S);
+        rk.escalate(transactions[1]);
+        System.out.println(lockManager.log);
+
     }
 
     @Test
